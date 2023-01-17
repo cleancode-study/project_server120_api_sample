@@ -1,7 +1,9 @@
 package com.example.project_server120_api_sample.controller;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import com.example.project_server120_api_sample.dto.MemberDTO;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.config.EnableWebFlux;
+import reactor.core.publisher.Flux;
 
 
 @RestController
@@ -25,6 +29,22 @@ public class GetController {
     @ApiOperation(value = "hello, world api", notes = "hellow world swagger check")
     public String getHello() {
         return "Hello Around Hub Studio!";
+    }
+
+    // Content-Type: text/event-stream; content-type 변경하는 코드 찾기
+    @GetMapping("/flux")
+    Flux<String> hello() {
+        return Flux.just("Hello", "World");
+    }
+
+//    Content-Type: application/json
+//    Content-Type: text/event-stream;
+//    Content-Type: application/stream+json
+    @GetMapping("/stream")
+    Flux<Map<String, Integer>> stream() {
+        Stream<Integer> stream = Stream.iterate(0, i -> i + 1); // Java8의 무한Stream
+        return Flux.fromStream(stream.limit(10)) // limit 제외하면 무한 발송
+                .map(i -> Collections.singletonMap("value", i));
     }
 
     @ApiOperation(value = "test", notes = "테스트입니다")

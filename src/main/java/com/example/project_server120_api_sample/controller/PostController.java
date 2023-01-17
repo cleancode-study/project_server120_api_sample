@@ -7,10 +7,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api/v1/post-api")
 public class PostController {
+
+//    Mono에 감싸서 받도록 해서, 비동기적으로 처리를 chain/compose으로 할 수 있다. (참고로 Mono에서 감싸지 않고 String으로 받은 경우는 논블러킹으로 동기화 처리)
+//    Mono는 1 또는 0 요소의 Publisher
+    @PostMapping("/echo")
+    Mono<String> echo(@RequestBody Mono<String> body) {
+        return body.map(String::toUpperCase);
+    }
 
     // http://localhost:8080/api/v1/post-api/default
     @PostMapping(value = "/default")
