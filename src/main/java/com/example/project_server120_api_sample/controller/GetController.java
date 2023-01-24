@@ -5,11 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import com.example.project_server120_api_sample.config.TestConfig;
 import com.example.project_server120_api_sample.dto.MemberDTO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,11 +26,14 @@ import reactor.core.publisher.Flux;
 @RequestMapping("/api/v1/get-api")
 public class GetController {
 
+    @Autowired
+    TestConfig testConfig;
+
     // http://localhost:8080/api/v1/get-api/hello
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     @ApiOperation(value = "hello, world api", notes = "hellow world swagger check")
     public String getHello() {
-        return "Hello Around Hub Studio!";
+        return testConfig.getServers().get(0) + " / " + testConfig.getServers().get(1);
     }
 
     // Content-Type: text/event-stream; content-type 변경하는 코드 찾기

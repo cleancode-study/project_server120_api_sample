@@ -26,7 +26,8 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     // mac os option
     implementation("io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64")
-    // webflux
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
 
     // swagger
     implementation("io.springfox:springfox-boot-starter:3.0.0")
